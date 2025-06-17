@@ -1,12 +1,13 @@
+import base64
+from typing import List
+
 import cv2
 import dlib
 import numpy as np
+import uvicorn
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from typing import List
-import base64
-import uvicorn
 
 # Face detector + shape predictor 초기화
 detector = dlib.get_frontal_face_detector()
