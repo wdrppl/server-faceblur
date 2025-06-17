@@ -48,11 +48,8 @@ def blur_face_outline(image: np.ndarray,
     faces = detector(gray, 1)
 
     if len(faces) == 0:
-        raise HTTPException(
-            status_code=400,
-            detail=
-            "No face detected in the image. Please upload an image containing a face."
-        )
+        error_message = "사진에서 얼굴을 찾을 수 없습니다. 얼굴이 잘 나오는 사진을 업로드해주세요."
+        raise HTTPException(status_code=422, detail=error_message)
 
     for face in faces:
         shape = predictor(gray, face)
@@ -126,7 +123,11 @@ async def process_image(request: BlurRequest):
         processed_base64 = base64.b64encode(buffer).decode('utf-8')
 
         return {"processed_image": processed_base64}
+    except HTTPException as he:
+        # HTTPException은 그대로 전달
+        raise he
     except Exception as e:
+        # 그 외 예외는 500 에러로 처리
         raise HTTPException(status_code=500, detail=str(e))
 
 

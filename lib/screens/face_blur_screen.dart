@@ -161,11 +161,39 @@ class FaceBlurScreenState extends State<FaceBlurScreen> {
       setState(() => _isLoading = false);
       if (!mounted) return;
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('이미지 처리 중 오류 발생: $e'),
-          backgroundColor: Colors.red,
-        ),
+      // 에러 메시지를 팝업으로 표시
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('알림'),
+            content: Text(
+              e.toString().replaceAll('Exception: ', ''),
+              style: const TextStyle(fontSize: 16),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // 팝업 닫기
+                },
+                child: const Text(
+                  '닫기',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue,
+                  ),
+                ),
+              ),
+            ],
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            backgroundColor: Colors.white,
+            elevation: 24,
+          );
+        },
+        barrierDismissible: false, // 팝업 외부 터치로 닫히지 않도록 설정
       );
     }
   }
