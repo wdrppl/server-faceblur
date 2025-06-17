@@ -34,13 +34,43 @@ class FaceBlurScreenState extends State<FaceBlurScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                ElevatedButton(
-                  onPressed: _pickImage,
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 12),
+                if (_imageFile == null)
+                  Center(
+                    child: InkWell(
+                      onTap: _pickImage,
+                      child: Container(
+                        width: 300,
+                        height: 300,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: Colors.grey[400]!,
+                            width: 2,
+                          ),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.add_photo_alternate_outlined,
+                              size: 64,
+                              color: Colors.grey[600],
+                            ),
+                            const SizedBox(height: 12),
+                            Text(
+                              '이미지 선택',
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
-                  child: const Text('이미지 선택'),
-                ),
                 if (_imageFile != null) ...[
                   const SizedBox(height: 16),
                   ClipRRect(
@@ -67,44 +97,82 @@ class FaceBlurScreenState extends State<FaceBlurScreen> {
                   ),
                   const SizedBox(height: 8),
                   Card(
-                    child: Column(
-                      children: ['Left', 'Right', 'Mouth'].map((part) {
-                        return CheckboxListTile(
-                          title: Text(part),
-                          value: _selectedParts.contains(part),
-                          onChanged: (selected) {
-                            setState(() {
-                              if (selected ?? false) {
-                                _selectedParts.add(part);
-                              } else {
-                                _selectedParts.remove(part);
-                              }
-                            });
-                          },
-                        );
-                      }).toList(),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: ['Left', 'Mouth', 'Right'].map((part) {
+                          return Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Checkbox(
+                                value: _selectedParts.contains(part),
+                                onChanged: (selected) {
+                                  setState(() {
+                                    if (selected ?? false) {
+                                      _selectedParts.add(part);
+                                    } else {
+                                      _selectedParts.remove(part);
+                                    }
+                                  });
+                                },
+                              ),
+                              Text(part),
+                            ],
+                          );
+                        }).toList(),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: _isLoading ? null : _processImage,
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      backgroundColor: Theme.of(context).colorScheme.primary,
-                    ),
-                    child: const Text(
-                      '이미지 처리',
-                      style: TextStyle(
-                        color: Colors.red,
-                        fontWeight: FontWeight.bold,
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: ElevatedButton(
+                          onPressed: _isLoading ? null : _processImage,
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            backgroundColor: Theme.of(
+                              context,
+                            ).colorScheme.primary,
+                          ),
+                          child: const Text(
+                            '블러 처리',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        flex: 1,
+                        child: ElevatedButton(
+                          onPressed: _processedImage == null
+                              ? null
+                              : _resetBlur,
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            backgroundColor: Colors.grey[300],
+                          ),
+                          child: const Text(
+                            '블러 리셋',
+                            style: TextStyle(
+                              color: Colors.black87,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
                 if (_processedImage != null) ...[
                   const SizedBox(height: 24),
                   Text(
-                    '처리된 이미지:',
+                    '블러 처리된 이미지:',
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   const SizedBox(height: 8),
@@ -196,5 +264,11 @@ class FaceBlurScreenState extends State<FaceBlurScreen> {
         barrierDismissible: false, // 팝업 외부 터치로 닫히지 않도록 설정
       );
     }
+  }
+
+  Future<void> _resetBlur() async {
+    setState(() {
+      _processedImage = null;
+    });
   }
 }
