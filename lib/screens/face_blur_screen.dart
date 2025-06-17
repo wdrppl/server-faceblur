@@ -72,12 +72,28 @@ class FaceBlurScreenState extends State<FaceBlurScreen> {
                     ),
                   ),
                 if (_imageFile != null) ...[
-                  const SizedBox(height: 16),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8),
-                    child: Image.file(_imageFile!),
+                    child: _processedImage != null
+                        ? Image.memory(_processedImage!)
+                        : Image.file(_imageFile!),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: _pickImage,
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      backgroundColor: Colors.grey[300],
+                    ),
+                    child: const Text(
+                      '사진 변경하기',
+                      style: TextStyle(
+                        color: Colors.black87,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
                   Text(
                     '블러 강도: ${_blurStrength.round()}',
                     style: Theme.of(context).textTheme.titleMedium,
@@ -90,7 +106,7 @@ class FaceBlurScreenState extends State<FaceBlurScreen> {
                     label: _blurStrength.round().toString(),
                     onChanged: (value) => setState(() => _blurStrength = value),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 10),
                   Text(
                     '블러 해제 영역:',
                     style: Theme.of(context).textTheme.titleMedium,
@@ -169,18 +185,6 @@ class FaceBlurScreenState extends State<FaceBlurScreen> {
                     ],
                   ),
                 ],
-                if (_processedImage != null) ...[
-                  const SizedBox(height: 24),
-                  Text(
-                    '블러 처리된 이미지:',
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  const SizedBox(height: 8),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.memory(_processedImage!),
-                  ),
-                ],
               ],
             ),
           ),
@@ -198,15 +202,22 @@ class FaceBlurScreenState extends State<FaceBlurScreen> {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(
       source: ImageSource.gallery,
-      maxWidth: 1200, // 이미지 크기 제한
+      maxWidth: 1200,
     );
 
     if (pickedFile != null) {
       setState(() {
         _imageFile = File(pickedFile.path);
         _processedImage = null;
+        _selectedParts = ['Right']; // 기본값을 Right로 변경
       });
     }
+  }
+
+  Future<void> _resetBlur() async {
+    setState(() {
+      _processedImage = null;
+    });
   }
 
   Future<void> _processImage() async {
@@ -229,7 +240,6 @@ class FaceBlurScreenState extends State<FaceBlurScreen> {
       setState(() => _isLoading = false);
       if (!mounted) return;
 
-      // 에러 메시지를 팝업으로 표시
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -242,7 +252,7 @@ class FaceBlurScreenState extends State<FaceBlurScreen> {
             actions: [
               TextButton(
                 onPressed: () {
-                  Navigator.of(context).pop(); // 팝업 닫기
+                  Navigator.of(context).pop();
                 },
                 child: const Text(
                   '닫기',
@@ -261,14 +271,8 @@ class FaceBlurScreenState extends State<FaceBlurScreen> {
             elevation: 24,
           );
         },
-        barrierDismissible: false, // 팝업 외부 터치로 닫히지 않도록 설정
+        barrierDismissible: false,
       );
     }
-  }
-
-  Future<void> _resetBlur() async {
-    setState(() {
-      _processedImage = null;
-    });
   }
 }
