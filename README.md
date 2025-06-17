@@ -1,16 +1,44 @@
-# server_faceblur
+# Face Blur App
 
-A new Flutter project.
+얼굴 사진의 특정 부분만 선택적으로 블러 처리할 수 있는 Flutter 애플리케이션입니다.
 
-## Getting Started
+## 시작하기
 
-This project is a starting point for a Flutter application.
+이 프로젝트를 실행하기 위해서는 다음 단계들을 따라주세요:
 
-A few resources to get you started if this is your first Flutter project:
+### 사전 준비사항
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+1. Flutter SDK 설치 (3.29.3 이상)
+2. Python 3.11 이상 설치
+3. 서버 실행 (server 디렉토리의 README.md 참조)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### 앱 실행하기
+
+1. 의존성 패키지 설치:
+```bash
+flutter pub get
+```
+
+2. 앱 실행:
+```bash
+flutter run
+```
+
+## 주요 기능
+
+- 갤러리에서 이미지 선택
+- 얼굴 부위별 선택적 블러 처리 (왼쪽, 오른쪽, 입 주변)
+- 블러 강도 조절 가능
+- 실시간 이미지 처리
+
+## 사용 방법
+
+1. '이미지 선택' 버튼을 눌러 갤러리에서 얼굴이 포함된 사진을 선택합니다.
+2. 블러 처리하지 않을 영역을 선택합니다 (왼쪽, 오른쪽, 입 주변).
+3. 블러 강도를 슬라이더로 조절합니다.
+4. '이미지 처리' 버튼을 눌러 선택한 설정으로 이미지를 처리합니다.
+
+## 문제 해결
+
+- 얼굴이 감지되지 않는 경우, 얼굴이 잘 보이는 다른 사진을 선택해주세요.
+- 서버 연결 오류 발생 시, 서버가 실행 중인지 확인해주세요.
