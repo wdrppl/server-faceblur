@@ -4,19 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../services/face_blur_service.dart';
 
-class FaceBlurScreenA extends StatefulWidget {
-  const FaceBlurScreenA({super.key});
+class FaceBlurScreenB extends StatefulWidget {
+  const FaceBlurScreenB({super.key});
 
   @override
-  FaceBlurScreenAState createState() => FaceBlurScreenAState();
+  FaceBlurScreenBState createState() => FaceBlurScreenBState();
 }
 
-class FaceBlurScreenAState extends State<FaceBlurScreenA> {
+class FaceBlurScreenBState extends State<FaceBlurScreenB> {
   final FaceBlurService _service = FaceBlurService();
   File? _imageFile;
   Uint8List? _processedImage;
   // ignore: prefer_final_fields
-  List<String> _selectedParts = ['Left'];
+  List<String> _selectedParts = ['Right'];
   double _blurStrength = 66;
   bool _isLoading = false;
 
@@ -209,7 +209,7 @@ class FaceBlurScreenAState extends State<FaceBlurScreenA> {
       setState(() {
         _imageFile = File(pickedFile.path);
         _processedImage = null;
-        _selectedParts = ['Right']; // 기본값을 Right로 변경
+        _selectedParts = ['Right'];
       });
     }
   }
