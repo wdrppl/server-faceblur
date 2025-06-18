@@ -36,27 +36,29 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 20),
-            // ElevatedButton(
-            //   onPressed: () {
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute(builder: (context) => const FaceBlurScreenB()),
-            //     );
-            //   },
-            //   style: ElevatedButton.styleFrom(
-            //     padding: const EdgeInsets.all(24),
-            //     shape: const CircleBorder(),
-            //     backgroundColor: Theme.of(context).colorScheme.primary,
-            //   ),
-            //   child: const Text(
-            //     'B',
-            //     style: TextStyle(
-            //       fontSize: 32,
-            //       fontWeight: FontWeight.bold,
-            //       color: Colors.white,
-            //     ),
-            //   ),
-            // ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const FaceBlurScreenB(),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.all(24),
+                shape: const CircleBorder(),
+                backgroundColor: Theme.of(context).colorScheme.primary,
+              ),
+              child: const Text(
+                'B',
+                style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ),
           ],
         ),
       ),

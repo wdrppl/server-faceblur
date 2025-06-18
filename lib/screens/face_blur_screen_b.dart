@@ -15,9 +15,10 @@ class FaceBlurScreenBState extends State<FaceBlurScreenB> {
   final FaceBlurService _service = FaceBlurService();
   File? _imageFile;
   Uint8List? _processedImage;
+  Uint8List? _fullBlurredImage;
   // ignore: prefer_final_fields
-  List<String> _selectedParts = ['Right'];
-  double _blurStrength = 66;
+  List<String> _selectedParts = ['Left'];
+  double _blurStrength = 60;
   bool _isLoading = false;
 
   @override
@@ -100,10 +101,10 @@ class FaceBlurScreenBState extends State<FaceBlurScreenB> {
                   ),
                   Slider(
                     value: _blurStrength,
-                    min: 60,
-                    max: 80,
-                    divisions: 10,
-                    label: _blurStrength.round().toString(),
+                    min: 40,
+                    max: 200,
+                    divisions: 16,
+                    label: _blurStrength == 60 ? '추천' : _blurStrength.round().toString(),
                     onChanged: (value) => setState(() => _blurStrength = value),
                   ),
                   const SizedBox(height: 10),
@@ -184,6 +185,21 @@ class FaceBlurScreenBState extends State<FaceBlurScreenB> {
                       ),
                     ],
                   ),
+                  if (_fullBlurredImage != null) ...[
+                    const SizedBox(height: 20),
+                    const Text(
+                      '전체 블러 처리된 이미지',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.memory(_fullBlurredImage!),
+                    ),
+                  ],
                 ],
               ],
             ),
@@ -209,7 +225,7 @@ class FaceBlurScreenBState extends State<FaceBlurScreenB> {
       setState(() {
         _imageFile = File(pickedFile.path);
         _processedImage = null;
-        _selectedParts = ['Right'];
+        _selectedParts = ['Left'];
       });
     }
   }
@@ -217,6 +233,7 @@ class FaceBlurScreenBState extends State<FaceBlurScreenB> {
   Future<void> _resetBlur() async {
     setState(() {
       _processedImage = null;
+      _fullBlurredImage = null;
     });
   }
 
@@ -234,6 +251,7 @@ class FaceBlurScreenBState extends State<FaceBlurScreenB> {
 
       setState(() {
         _processedImage = processedRequest.partialBlurredImage;
+        _fullBlurredImage = processedRequest.fullBlurredImage;
         _isLoading = false;
       });
     } catch (e) {
