@@ -15,6 +15,7 @@ class FaceBlurScreenAState extends State<FaceBlurScreenA> {
   final FaceBlurService _service = FaceBlurService();
   File? _imageFile;
   Uint8List? _processedImage;
+  Uint8List? _fullBlurredImage;
   // ignore: prefer_final_fields
   List<String> _selectedParts = ['Left'];
   double _blurStrength = 66;
@@ -184,6 +185,21 @@ class FaceBlurScreenAState extends State<FaceBlurScreenA> {
                       ),
                     ],
                   ),
+                  if (_fullBlurredImage != null) ...[
+                    const SizedBox(height: 20),
+                    const Text(
+                      '전체 블러 처리된 이미지',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.memory(_fullBlurredImage!),
+                    ),
+                  ],
                 ],
               ],
             ),
@@ -209,7 +225,7 @@ class FaceBlurScreenAState extends State<FaceBlurScreenA> {
       setState(() {
         _imageFile = File(pickedFile.path);
         _processedImage = null;
-        _selectedParts = ['Right']; // 기본값을 Right로 변경
+        _selectedParts = ['Left']; // 기본값을 Left로
       });
     }
   }
@@ -217,6 +233,7 @@ class FaceBlurScreenAState extends State<FaceBlurScreenA> {
   Future<void> _resetBlur() async {
     setState(() {
       _processedImage = null;
+      _fullBlurredImage = null;
     });
   }
 
@@ -234,6 +251,7 @@ class FaceBlurScreenAState extends State<FaceBlurScreenA> {
 
       setState(() {
         _processedImage = processedRequest.partialBlurredImage;
+        _fullBlurredImage = processedRequest.fullBlurredImage;
         _isLoading = false;
       });
     } catch (e) {
