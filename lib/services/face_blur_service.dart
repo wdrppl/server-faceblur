@@ -42,6 +42,13 @@ class FaceBlurService {
         partialBlurredImage: base64Decode(partialBlurBase64),
         fullBlurredImage: base64Decode(fullBlurBase64),
       );
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 422) {
+        // 422 에러는 서버에서 보낸 상세 메시지를 표시
+        // '사진에서 얼굴을 찾을 수 없습니다. 얼굴이 잘 나오는 사진을 업로드해주세요.'
+        throw Exception(e.response?.data['detail'] ?? '이미지 처리 중 오류가 발생했습니다.');
+      }
+      throw Exception('이미지 처리 중 오류가 발생했습니다: ${e.message}');
     } catch (e) {
       throw Exception('이미지 처리 중 오류가 발생했습니다: $e');
     }
