@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../services/face_blur_service.dart';
 
-class FaceBlurScreen extends StatefulWidget {
-  const FaceBlurScreen({super.key});
+class FaceBlurScreenA extends StatefulWidget {
+  const FaceBlurScreenA({super.key});
 
   @override
-  FaceBlurScreenState createState() => FaceBlurScreenState();
+  FaceBlurScreenAState createState() => FaceBlurScreenAState();
 }
 
-class FaceBlurScreenState extends State<FaceBlurScreen> {
+class FaceBlurScreenAState extends State<FaceBlurScreenA> {
   final FaceBlurService _service = FaceBlurService();
   File? _imageFile;
   Uint8List? _processedImage;
