@@ -18,7 +18,7 @@ class FaceBlurScreenAState extends State<FaceBlurScreenA> {
   Uint8List? _fullBlurredImage;
   // ignore: prefer_final_fields
   List<String> _selectedParts = ['Left'];
-  double _blurStrength = 66;
+  double _blurStrength = 60;
   bool _isLoading = false;
 
   @override
@@ -101,8 +101,8 @@ class FaceBlurScreenAState extends State<FaceBlurScreenA> {
                   ),
                   Slider(
                     value: _blurStrength,
-                    min: 60,
-                    max: 80,
+                    min: 40,
+                    max: 200,
                     divisions: 10,
                     label: _blurStrength.round().toString(),
                     onChanged: (value) => setState(() => _blurStrength = value),
