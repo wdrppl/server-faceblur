@@ -39,7 +39,7 @@ def apply_blur(image: np.ndarray, strength: int) -> np.ndarray:
 
 
 def blur_face_outline(image: np.ndarray,
-                      blur_strength: int = 66,
+                      blur_strength: int,
                       unblur_parts: list = ["Left"],
                       mask_blur_kernel: tuple = (21, 21),
                       mask_blur_sigma: int = 11) -> np.ndarray:
