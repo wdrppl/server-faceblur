@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 import '../models/blur_request.dart';
 
 class FaceBlurService {
-  final String baseUrl = 'http://localhost:8080';
+  final String baseUrl = 'http://localhost:8000';
   final Dio dio = Dio();
 
   Future<BlurRequest> processImage({
